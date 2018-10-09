@@ -1,5 +1,5 @@
 # synchronization-problems
-Classical (and not-so-classical) Synchronization Problems
+### Classical (and not-so-classical) Synchronization Problems
 
 All code credits reproduced below, and included in the headers of their respective files.
 
