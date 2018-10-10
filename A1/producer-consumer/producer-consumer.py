@@ -20,15 +20,15 @@ class ProducerThread(Thread):
         while True:
             condition.acquire()
             if len(queue) == MAX_NUM:
-                print "Queue full, producer is waiting"
+                #print "Queue full, producer is waiting"
                 condition.wait()
-                print "Space in queue, Consumer notified the producer"
+                #print "Space in queue, Consumer notified the producer"
             num = random.choice(nums)
             queue.append(num)
-            print "Produced", num
+            #print "Produced", num
             condition.notify()
             condition.release()
-            time.sleep(random.random())
+            time.sleep(1)
 
 
 class ConsumerThread(Thread):
@@ -37,19 +37,19 @@ class ConsumerThread(Thread):
         while True:
             condition.acquire()
             if not queue:
-                print "Nothing in queue, consumer is waiting"
+                #print "Nothing in queue, consumer is waiting"
                 condition.wait()
-                print "Producer added something to queue and notified the consumer"
+                #print "Producer added something to queue and notified the consumer"
             num = queue.pop(0)
-            print "Consumed", num
+            #print "Consumed", num
             condition.notify()
             condition.release()
-            time.sleep(random.random())
+            time.sleep(1)
 
 class Monitor(Thread):
     def run(self):
         for i in range(10):
-            print "CPU usage:", psutil.cpu_percent()
+            print "CPU usage:", psutil.cpu_percent(0.2, False)
             print psutil.virtual_memory()
             time.sleep(5)
         thread.interrupt_main()

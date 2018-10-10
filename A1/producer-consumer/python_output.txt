@@ -1,0 +1,21 @@
+CPU usage: 37.2
+svmem(total=8280674304, available=4303310848, percent=48.0, used=3392086016, free=550375424, active=4624220160, inactive=2468397056, buffers=365555712, cached=3972657152, shared=271958016, slab=366374912)
+CPU usage: 42.7
+svmem(total=8280674304, available=4541149184, percent=45.2, used=3154247680, free=788201472, active=4386213888, inactive=2468405248, buffers=365555712, cached=3972669440, shared=271958016, slab=366374912)
+CPU usage: 38.0
+svmem(total=8280674304, available=4560191488, percent=44.9, used=3135193088, free=807247872, active=4368183296, inactive=2468392960, buffers=365559808, cached=3972673536, shared=271958016, slab=366374912)
+CPU usage: 37.5
+svmem(total=8280674304, available=4560076800, percent=44.9, used=3135320064, free=807120896, active=4368633856, inactive=2468401152, buffers=365559808, cached=3972673536, shared=271958016, slab=366374912)
+CPU usage: 43.4
+svmem(total=8280674304, available=4559822848, percent=44.9, used=3135574016, free=806866944, active=4369018880, inactive=2468401152, buffers=365559808, cached=3972673536, shared=271958016, slab=366374912)
+CPU usage: 41.0
+svmem(total=8280674304, available=4559441920, percent=44.9, used=3135954944, free=806486016, active=4369477632, inactive=2468401152, buffers=365559808, cached=3972673536, shared=271958016, slab=366374912)
+CPU usage: 40.7
+svmem(total=8280674304, available=4560080896, percent=44.9, used=3135315968, free=807120896, active=4368650240, inactive=2468401152, buffers=365563904, cached=3972673536, shared=271958016, slab=366374912)
+CPU usage: 37.7
+svmem(total=8280674304, available=4555558912, percent=45.0, used=3139837952, free=802549760, active=4373557248, inactive=2468442112, buffers=365568000, cached=3972718592, shared=271958016, slab=366374912)
+CPU usage: 38.8
+svmem(total=8280674304, available=4555051008, percent=45.0, used=3140345856, free=802041856, active=4374061056, inactive=2468438016, buffers=365568000, cached=3972718592, shared=271958016, slab=366374912)
+CPU usage: 37.5
+svmem(total=8280674304, available=4554797056, percent=45.0, used=3140599808, free=801787904, active=4374433792, inactive=2468438016, buffers=365572096, cached=3972714496, shared=271958016, slab=366374912)
+Exception KeyboardInterrupt in <module 'threading' from '/usr/lib/python2.7/threading.pyc'> ignored

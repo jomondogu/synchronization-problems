@@ -21,7 +21,7 @@ func produce () {
       num := rand.Intn(nums)
       msgs <- num
       //fmt.Printf("Produced token %v : it's a living!\n", num)
-      time.Sleep(time.Duration(rand.Float64()) * time.Second)
+      time.Sleep(time.Second)
     }
 }
 
@@ -30,7 +30,7 @@ func consume () {
       <-msgs
       //msg := <-msgs
       //fmt.Printf("Consumed token %v : yum yum yum!\n", msg)
-      time.Sleep(time.Duration(rand.Float64()) * time.Second)
+      time.Sleep(time.Second)
    }
 }
 
