@@ -3,9 +3,11 @@ dining savages problem in Python
 uses threading_cleanup.py from http://greenteapress.com/semaphores/threading_cleanup.py
 """
 
+import thread
 from threading_cleanup import *
 import time
 import random
+import psutil
 
 M = 50
 
@@ -37,6 +39,18 @@ def savages_code(shared):
 
         print "Eating : yum yum yum!"
         time.sleep(random.random())
+
+class Monitor(Thread):
+    def run(self):
+        for i in range(10):
+            print psutil.cpu_times()
+            print "CPU usage:", psutil.cpu_percent()
+            print psutil.virtual_memory()
+            time.sleep(5)
+        thread.interrupt_main()
+
+Monitor().start()
+time.sleep(1)
 
 shared = Shared()
 cook = Thread(cook_code, shared)

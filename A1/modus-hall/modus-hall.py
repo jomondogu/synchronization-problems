@@ -3,9 +3,11 @@ modus hall problem in Python
 based on code from https://www.greenteapress.com/
 """
 
+import thread
 from threading_cleanup import *
 import time
 import random
+import psutil
 
 students = 10
 
@@ -109,6 +111,18 @@ def prude_code(shared):
                 shared.prudeTurn.wait()
 
         shared.mutex.signal()
+
+class Monitor(Thread):
+    def run(self):
+        for i in range(10):
+            print psutil.cpu_times()
+            print "CPU usage:", psutil.cpu_percent()
+            print psutil.virtual_memory()
+            time.sleep(5)
+        thread.interrupt_main()
+
+Monitor().start()
+time.sleep(1)
 
 shared = Shared()
 heathen = Thread(heathen_code, shared)

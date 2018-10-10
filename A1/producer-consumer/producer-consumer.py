@@ -4,8 +4,10 @@ from https://www.agiliq.com/blog/2013/10/producer-consumer-problem-in-python/
 """
 
 from threading import Thread, Condition
+import thread
 import time
 import random
+import psutil
 
 queue = []
 MAX_NUM = 10
@@ -43,6 +45,17 @@ class ConsumerThread(Thread):
             condition.notify()
             condition.release()
             time.sleep(random.random())
+
+class Monitor(Thread):
+    def run(self):
+        for i in range(10):
+            print "CPU usage:", psutil.cpu_percent()
+            print psutil.virtual_memory()
+            time.sleep(5)
+        thread.interrupt_main()
+
+Monitor().start()
+time.sleep(1)
 
 ProducerThread().start()
 ConsumerThread().start()

@@ -3,9 +3,11 @@ sushi bar problem in Python
 uses threading_cleanup.py from http://greenteapress.com/semaphores/threading_cleanup.py
 """
 
+import thread
 from threading_cleanup import *
 import time
 import random
+import psutil
 
 crowd = 5
 maximum = 5
@@ -44,6 +46,18 @@ def customer_code(shared):
             print("Customer is leaving...")
             shared.block.signal(n)
         shared.mutex.signal()
+
+class Monitor(Thread):
+    def run(self):
+        for i in range(10):
+            print psutil.cpu_times()
+            print "CPU usage:", psutil.cpu_percent()
+            print psutil.virtual_memory()
+            time.sleep(5)
+        thread.interrupt_main()
+
+Monitor().start()
+time.sleep(1)
 
 shared = Shared()
 customers = [Thread(customer_code, shared) for i in range(crowd)]

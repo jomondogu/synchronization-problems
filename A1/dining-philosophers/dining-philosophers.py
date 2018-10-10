@@ -1,6 +1,7 @@
-import threading
+import thread import threading
 import random
 import time
+import psutil
 
 # Dining philosophers, 5 Phillies with 5 forks. Must have two forks to eat.
 #
@@ -64,5 +65,17 @@ def DiningPhilosophers():
     time.sleep(100)
     Philosopher.running = False
     print ("Now we're finishing.")
+
+class Monitor(Thread):
+    def run(self):
+        for i in range(10):
+            print psutil.cpu_times()
+            print "CPU usage:", psutil.cpu_percent()
+            print psutil.virtual_memory()
+            time.sleep(5)
+        thread.interrupt_main()
+
+Monitor().start()
+time.sleep(1)
 
 DiningPhilosophers()
