@@ -20,7 +20,7 @@ def cook_code(shared):
     while True:
         shared.emptyPot.wait()
 
-        print "Cooking..."
+        print "Cooking : the OTHER other white meat!"
         time.sleep(random.random())
         shared.servings = M
 
@@ -35,7 +35,7 @@ def savages_code(shared):
         shared.servings -= 1
         shared.mutex.signal()
 
-        print "Eating..."
+        print "Eating : yum yum yum!"
         time.sleep(random.random())
 
 shared = Shared()

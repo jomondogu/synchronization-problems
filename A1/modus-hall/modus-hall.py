@@ -1,5 +1,5 @@
 """
-unisex bathroom problem in Python
+modus hall problem in Python
 based on code from https://www.greenteapress.com/
 """
 
