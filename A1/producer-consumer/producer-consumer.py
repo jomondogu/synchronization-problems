@@ -12,11 +12,14 @@ import psutil
 queue = []
 MAX_NUM = 10
 condition = Condition()
+psum = 0
+csum = 0
 
 class ProducerThread(Thread):
     def run(self):
         nums = range(5)
         global queue
+        global psum
         while True:
             condition.acquire()
             if len(queue) == MAX_NUM:
@@ -26,14 +29,14 @@ class ProducerThread(Thread):
             num = random.choice(nums)
             queue.append(num)
             #print "Produced", num
+            psum += 1
             condition.notify()
             condition.release()
-            time.sleep(1)
-
 
 class ConsumerThread(Thread):
     def run(self):
         global queue
+        global csum
         while True:
             condition.acquire()
             if not queue:
@@ -42,16 +45,28 @@ class ConsumerThread(Thread):
                 #print "Producer added something to queue and notified the consumer"
             num = queue.pop(0)
             #print "Consumed", num
+            csum += 1
             condition.notify()
             condition.release()
-            time.sleep(1)
 
 class Monitor(Thread):
     def run(self):
-        for i in range(10):
-            print "CPU usage:", psutil.cpu_percent(0.2, False)
-            print psutil.virtual_memory()
-            time.sleep(5)
+        iterations = 10
+        CPUusage = []
+        VMusage = []
+        for i in range(iterations):
+            CPU = psutil.cpu_percent(0.2, False)
+            print "CPU usage:", CPU
+            CPUusage.append(CPU)
+            VM = psutil.virtual_memory()
+            print VM
+            VMusage.append(VM[2])
+            time.sleep(1)
+        CPUavg = sum(CPUusage)/float(len(CPUusage))
+        print "Average CPU usage:", CPUavg
+        VMavg = sum(VMusage)/float(len(VMusage))
+        print "Average VM usage:", VMavg
+        print "Total productions:", psum, "Total consumptions:", csum
         thread.interrupt_main()
 
 Monitor().start()

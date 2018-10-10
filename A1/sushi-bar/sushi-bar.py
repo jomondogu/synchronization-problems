@@ -11,6 +11,8 @@ import psutil
 
 crowd = 5
 maximum = 5
+eatsum = 0
+waitsum = 0
 
 class Shared:
     def __init__(self):
@@ -21,20 +23,24 @@ class Shared:
         self.must_wait = False
 
 def customer_code(shared):
+    global waitsum
+    global eatsum
     while True:
         shared.mutex.wait()
         if shared.must_wait:
             shared.waiting += 1
             shared.mutex.signal()
-            print("Customer is waiting for a spot.")
+            #print("Customer is waiting for a spot.")
+            waitsum += 1
             shared.block.wait()
         else:
             shared.eating += 1
             shared.must_wait = (shared.eating == maximum)
             shared.mutex.signal()
 
-        print("Customer is eating sushi!")
-        time.sleep(random.random())
+        #print("Customer is eating sushi!")
+        #time.sleep(random.random())
+        eatsum += 1
 
         shared.mutex.wait()
         shared.eating -= 1
@@ -43,17 +49,28 @@ def customer_code(shared):
             shared.waiting -= n
             shared.eating += n
             shared.must_wait = (shared.eating == maximum)
-            print("Customer is leaving...")
+            #print("Customer is leaving...")
             shared.block.signal(n)
         shared.mutex.signal()
 
-class Monitor(Thread):
+class Monitor(threading.Thread):
     def run(self):
-        for i in range(10):
-            print psutil.cpu_times()
-            print "CPU usage:", psutil.cpu_percent()
-            print psutil.virtual_memory()
-            time.sleep(5)
+        iterations = 10
+        CPUusage = []
+        VMusage = []
+        for i in range(iterations):
+            CPU = psutil.cpu_percent(0.2, False)
+            print "CPU usage:", CPU
+            CPUusage.append(CPU)
+            VM = psutil.virtual_memory()
+            print VM
+            VMusage.append(VM[2])
+            time.sleep(1)
+        CPUavg = sum(CPUusage)/float(len(CPUusage))
+        print "Average CPU usage:", CPUavg
+        VMavg = sum(VMusage)/float(len(VMusage))
+        print "Average VM usage:", VMavg
+        print "Total wait loops:", waitsum, "Total eats:", eatsum
         thread.interrupt_main()
 
 Monitor().start()

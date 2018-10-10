@@ -1,0 +1,23 @@
+CPU usage: 1.3
+svmem(total=8280674304, available=4299288576, percent=48.1, used=3379609600, free=388947968, active=4739477504, inactive=2503921664, buffers=380088320, cached=4132028416, shared=288456704, slab=385458176)
+CPU usage: 39.0
+svmem(total=8280674304, available=4299161600, percent=48.1, used=3379736576, free=388820992, active=4739686400, inactive=2503921664, buffers=380088320, cached=4132028416, shared=288456704, slab=385458176)
+CPU usage: 34.2
+svmem(total=8280674304, available=4299128832, percent=48.1, used=3379769344, free=388820992, active=4739792896, inactive=2503888896, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 34.2
+svmem(total=8280674304, available=4298874880, percent=48.1, used=3380023296, free=388567040, active=4739964928, inactive=2503888896, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 34.2
+svmem(total=8280674304, available=4301414400, percent=48.1, used=3377483776, free=391106560, active=4736733184, inactive=2503888896, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 37.5
+svmem(total=8280674304, available=4301414400, percent=48.1, used=3377483776, free=391106560, active=4736745472, inactive=2503888896, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 34.2
+svmem(total=8280674304, available=4301160448, percent=48.1, used=3377737728, free=390852608, active=4736851968, inactive=2503888896, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 33.3
+svmem(total=8280674304, available=4301287424, percent=48.1, used=3377610752, free=390979584, active=4736999424, inactive=2503888896, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 35.1
+svmem(total=8280674304, available=4301287424, percent=48.1, used=3377610752, free=390979584, active=4737015808, inactive=2503884800, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+CPU usage: 33.3
+svmem(total=8280674304, available=4301287424, percent=48.1, used=3377610752, free=390979584, active=4737024000, inactive=2503884800, buffers=380088320, cached=4131995648, shared=288456704, slab=385458176)
+Average CPU usage: 31.63
+Average VM usage: 48.1
+Total wait loops: 3945 Total eats: 43096

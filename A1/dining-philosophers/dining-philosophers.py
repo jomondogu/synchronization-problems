@@ -1,4 +1,5 @@
-import thread import threading
+import thread
+import threading
 import random
 import time
 import psutil
@@ -13,6 +14,9 @@ import psutil
 # See discussion page note about 'live lock'.
 # from https://rosettacode.org/wiki/Dining_philosophers#Python
 
+dinesum = 0
+thinksum = 0
+
 class Philosopher(threading.Thread):
 
     running = True
@@ -24,10 +28,12 @@ class Philosopher(threading.Thread):
         self.forkOnRight = forkOnRight
 
     def run(self):
+        global thinksum
         while(self.running):
             #  Philosopher is thinking (but really is sleeping).
-            time.sleep( random.uniform(3,13))
-            print '%s is hungry.' % self.name
+            thinksum += 1
+            #time.sleep(1)
+            #print '%s is hungry.' % self.name
             self.dine()
 
     def dine(self):
@@ -38,7 +44,7 @@ class Philosopher(threading.Thread):
             locked = fork2.acquire(False)
             if locked: break
             fork1.release()
-            print '%s swaps forks' % self.name
+            #print '%s swaps forks' % self.name
             fork1, fork2 = fork2, fork1
         else:
             return
@@ -48,9 +54,11 @@ class Philosopher(threading.Thread):
         fork1.release()
 
     def dining(self):
-        print '%s starts eating '% self.name
-        time.sleep(random.uniform(1,10))
-        print '%s finishes eating and leaves to think.' % self.name
+        global dinesum
+        #print '%s starts eating '% self.name
+        dinesum += 1
+        #time.sleep(1)
+        #print '%s finishes eating and leaves to think.' % self.name
 
 def DiningPhilosophers():
     forks = [threading.Lock() for n in range(5)]
@@ -62,17 +70,28 @@ def DiningPhilosophers():
     random.seed(507129)
     Philosopher.running = True
     for p in philosophers: p.start()
-    time.sleep(100)
-    Philosopher.running = False
-    print ("Now we're finishing.")
+    #time.sleep(100)
+    #Philosopher.running = False
+    #print ("Now we're finishing.")
 
-class Monitor(Thread):
+class Monitor(threading.Thread):
     def run(self):
-        for i in range(10):
-            print psutil.cpu_times()
-            print "CPU usage:", psutil.cpu_percent()
-            print psutil.virtual_memory()
-            time.sleep(5)
+        iterations = 10
+        CPUusage = []
+        VMusage = []
+        for i in range(iterations):
+            CPU = psutil.cpu_percent(0.2, False)
+            print "CPU usage:", CPU
+            CPUusage.append(CPU)
+            VM = psutil.virtual_memory()
+            print VM
+            VMusage.append(VM[2])
+            time.sleep(1)
+        CPUavg = sum(CPUusage)/float(len(CPUusage))
+        print "Average CPU usage:", CPUavg
+        VMavg = sum(VMusage)/float(len(VMusage))
+        print "Average VM usage:", VMavg
+        print "Total dines:", dinesum, "Total thinks:", thinksum
         thread.interrupt_main()
 
 Monitor().start()

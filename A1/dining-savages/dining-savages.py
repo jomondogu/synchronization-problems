@@ -10,6 +10,8 @@ import random
 import psutil
 
 M = 50
+cooksum = 0
+eatsum = 0
 
 class Shared:
     def __init__(self):
@@ -19,16 +21,19 @@ class Shared:
         self.fullPot = Semaphore(0)
 
 def cook_code(shared):
+    global cooksum
     while True:
         shared.emptyPot.wait()
 
-        print "Cooking : the OTHER other white meat!"
-        time.sleep(random.random())
+        #print "Cooking : the OTHER other white meat!"
+        cooksum += 1
+        #time.sleep(random.random())
         shared.servings = M
 
         shared.fullPot.signal()
 
 def savages_code(shared):
+    global eatsum
     while True:
         shared.mutex.wait()
         if shared.servings == 0:
@@ -37,16 +42,28 @@ def savages_code(shared):
         shared.servings -= 1
         shared.mutex.signal()
 
-        print "Eating : yum yum yum!"
-        time.sleep(random.random())
+        #print "Eating : yum yum yum!"
+        eatsum += 1
+        #time.sleep(random.random())
 
-class Monitor(Thread):
+class Monitor(threading.Thread):
     def run(self):
-        for i in range(10):
-            print psutil.cpu_times()
-            print "CPU usage:", psutil.cpu_percent()
-            print psutil.virtual_memory()
-            time.sleep(5)
+        iterations = 10
+        CPUusage = []
+        VMusage = []
+        for i in range(iterations):
+            CPU = psutil.cpu_percent(0.2, False)
+            print "CPU usage:", CPU
+            CPUusage.append(CPU)
+            VM = psutil.virtual_memory()
+            print VM
+            VMusage.append(VM[2])
+            time.sleep(1)
+        CPUavg = sum(CPUusage)/float(len(CPUusage))
+        print "Average CPU usage:", CPUavg
+        VMavg = sum(VMusage)/float(len(VMusage))
+        print "Average VM usage:", VMavg
+        print "Total cooks:", cooksum, "Total eats:", eatsum
         thread.interrupt_main()
 
 Monitor().start()

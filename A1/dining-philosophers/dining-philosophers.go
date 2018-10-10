@@ -6,22 +6,27 @@ package main
 import (
     "hash/fnv"
     "log"
-    "math/rand"
+    //"math/rand"
     "os"
     "time"
+    "github.com/shirou/gopsutil/cpu"
+    "github.com/shirou/gopsutil/mem"
 )
 
 // Number of philosophers is simply the length of this list.
 // It is not otherwise fixed in the program.
 var ph = []string{"Aristotle", "Kant", "Spinoza", "Marx", "Russell"}
 
-const hunger = 3                // number of times each philosopher eats
-const think = time.Second / 100 // mean think time
-const eat = time.Second / 100   // mean eat time
+//const hunger = 3                // number of times each philosopher eats
+//const think = time.Second // mean think time
+//const eat = time.Second   // mean eat time
 
 var fmt = log.New(os.Stdout, "", 0) // for thread-safe output
 
 var done = make(chan bool)
+
+var thinksum = 0
+var dinesum = 0
 
 // This solution uses channels to implement synchronization.
 // Sent over channels are "forks."
@@ -36,34 +41,59 @@ type fork byte
 // philosopher.  Instances run concurrently.
 func philosopher(phName string,
     dominantHand, otherHand chan fork, done chan bool) {
-    fmt.Println(phName, "seated")
+    //fmt.Println(phName, "seated")
     // each philosopher goroutine has a random number generator,
     // seeded with a hash of the philosopher's name.
     h := fnv.New64a()
     h.Write([]byte(phName))
-    rg := rand.New(rand.NewSource(int64(h.Sum64())))
+    //rg := rand.New(rand.NewSource(int64(h.Sum64())))
     // utility function to sleep for a randomized nominal time
-    rSleep := func(t time.Duration) {
-        time.Sleep(t/2 + time.Duration(rg.Int63n(int64(t))))
-    }
-    for h := hunger; h > 0; h-- {
-        fmt.Println(phName, "hungry")
+    for {
+        //fmt.Println(phName, "hungry")
         <-dominantHand // pick up forks
         <-otherHand
-        fmt.Println(phName, "eating")
-        rSleep(eat)
+        //fmt.Println(phName, "eating")
+        dinesum += 1
+        //time.Sleep(eat)
         dominantHand <- 'f' // put down forks
         otherHand <- 'f'
-        fmt.Println(phName, "thinking")
-        rSleep(think)
+        //fmt.Println(phName, "thinking")
+        thinksum += 1
+        //time.Sleep(think)
     }
-    fmt.Println(phName, "satisfied")
     done <- true
-    fmt.Println(phName, "left the table")
+}
+
+func monitor () {
+    iterations := 10
+    CPUusage := 0.0
+    VMusage := 0.0
+    for i := 0; i < iterations; i++ {
+      c, err := cpu.Percent(time.Duration(200) * time.Millisecond, false)
+      m, err := mem.VirtualMemory()
+      if err == nil {
+        cpu := c[0]
+        vm := m.UsedPercent
+        CPUusage += cpu
+        VMusage += vm
+        fmt.Printf("CPU usage: %f\n", cpu)
+        fmt.Printf("%v\n", m)
+      }
+      time.Sleep(time.Second)
+    }
+    CPUavg := CPUusage / float64(iterations)
+    fmt.Printf("Average CPU usage: %f \n", CPUavg)
+    VMavg := VMusage / float64(iterations)
+    fmt.Printf("Average VM usage: %f \n", VMavg)
+    fmt.Printf("Total dines: %d\tTotal thinks: %d\n", dinesum, thinksum)
+    os.Exit(0)
 }
 
 func main() {
-    fmt.Println("table empty")
+    go monitor()
+    time.Sleep(time.Second)
+
+    //fmt.Println("table empty")
     // Create fork channels and start philosopher goroutines,
     // supplying each goroutine with the appropriate channels
     place0 := make(chan fork, 1)
@@ -83,5 +113,5 @@ func main() {
     for range ph {
         <-done // wait for philosphers to finish
     }
-    fmt.Println("table empty")
+    //fmt.Println("table empty")
 }

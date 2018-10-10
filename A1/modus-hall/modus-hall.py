@@ -10,6 +10,8 @@ import random
 import psutil
 
 students = 10
+heathensum = 0
+prudesum = 0
 
 class Shared:
     def __init__(self):
@@ -23,6 +25,7 @@ class Shared:
         self.prudeQueue = Semaphore(0)
 
 def heathen_code(shared):
+    global heathensum
     while True:
         shared.heathenTurn.wait()
         shared.heathenTurn.signal()
@@ -45,8 +48,9 @@ def heathen_code(shared):
         else:
             shared.mutex.signal()
 
-        print("Heathen crossing the field! PRUDES WATCH OUT")
-        time.sleep(random.random())
+        #print("Heathen crossing the field! PRUDES WATCH OUT")
+        heathensum += 1
+        #time.sleep(random.random())
 
         shared.mutex.wait()
         shared.heathens = shared.heathens - 1
@@ -68,6 +72,7 @@ def heathen_code(shared):
         shared.mutex.signal()
 
 def prude_code(shared):
+    global prudesum
     while True:
         shared.prudeTurn.wait()
         shared.prudeTurn.signal()
@@ -90,8 +95,9 @@ def prude_code(shared):
         else:
             shared.mutex.signal()
 
-        print("Prude crossing the field! HEATHENS WATCH OUT")
-        time.sleep(1)
+        #print("Prude crossing the field! HEATHENS WATCH OUT")
+        prudesum += 1
+        #time.sleep(1)
 
         shared.mutex.wait()
         shared.prudes = shared.prudes - 1
@@ -112,13 +118,24 @@ def prude_code(shared):
 
         shared.mutex.signal()
 
-class Monitor(Thread):
+class Monitor(threading.Thread):
     def run(self):
-        for i in range(10):
-            print psutil.cpu_times()
-            print "CPU usage:", psutil.cpu_percent()
-            print psutil.virtual_memory()
-            time.sleep(5)
+        iterations = 10
+        CPUusage = []
+        VMusage = []
+        for i in range(iterations):
+            CPU = psutil.cpu_percent(0.2, False)
+            print "CPU usage:", CPU
+            CPUusage.append(CPU)
+            VM = psutil.virtual_memory()
+            print VM
+            VMusage.append(VM[2])
+            time.sleep(1)
+        CPUavg = sum(CPUusage)/float(len(CPUusage))
+        print "Average CPU usage:", CPUavg
+        VMavg = sum(VMusage)/float(len(VMusage))
+        print "Average VM usage:", VMavg
+        print "Total heathens:", heathensum, "Total prudes:", prudesum
         thread.interrupt_main()
 
 Monitor().start()
