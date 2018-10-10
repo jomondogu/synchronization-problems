@@ -13,7 +13,7 @@ All code credits reproduced below, and included in the headers of their respecti
 
 - dining-savages.py: algorithm from Allen B. Downey, *The Little Book of Semaphores*
 - dining-savages.go: https://github.com/fsouza/lbos/blob/master/009-dining-savages.go (modified)
-- dining-savages.c: https://github.com/pythonGuy/classic-threads/blob/master/DiningSavages.c
+- dining-savages.c: https://github.com/pythonGuy/classic-threads/blob/master/DiningSavages.c (modified)
 
 - modus-hall.py: algorithm from Allen B. Downey, *The Little Book of Semaphores*
 - modus-hall.go: https://blog.ksub.org/bytes/post/modus-hall/modus-hall.go (modified)
