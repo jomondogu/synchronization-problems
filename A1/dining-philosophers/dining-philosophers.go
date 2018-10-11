@@ -6,7 +6,6 @@ package main
 import (
     "hash/fnv"
     "log"
-    //"math/rand"
     "os"
     "time"
     "github.com/shirou/gopsutil/cpu"
@@ -17,9 +16,7 @@ import (
 // It is not otherwise fixed in the program.
 var ph = []string{"Aristotle", "Kant", "Spinoza", "Marx", "Russell"}
 
-//const hunger = 3                // number of times each philosopher eats
-//const think = time.Second // mean think time
-//const eat = time.Second   // mean eat time
+const hunger = 3                // number of times each philosopher eats
 
 var fmt = log.New(os.Stdout, "", 0) // for thread-safe output
 
@@ -41,25 +38,17 @@ type fork byte
 // philosopher.  Instances run concurrently.
 func philosopher(phName string,
     dominantHand, otherHand chan fork, done chan bool) {
-    //fmt.Println(phName, "seated")
-    // each philosopher goroutine has a random number generator,
-    // seeded with a hash of the philosopher's name.
-    h := fnv.New64a()
-    h.Write([]byte(phName))
-    //rg := rand.New(rand.NewSource(int64(h.Sum64())))
-    // utility function to sleep for a randomized nominal time
+
     for {
-        //fmt.Println(phName, "hungry")
         <-dominantHand // pick up forks
         <-otherHand
-        //fmt.Println(phName, "eating")
+
         dinesum += 1
-        //time.Sleep(eat)
+
         dominantHand <- 'f' // put down forks
         otherHand <- 'f'
-        //fmt.Println(phName, "thinking")
+
         thinksum += 1
-        //time.Sleep(think)
     }
     done <- true
 }
@@ -93,7 +82,6 @@ func main() {
     go monitor()
     time.Sleep(time.Second)
 
-    //fmt.Println("table empty")
     // Create fork channels and start philosopher goroutines,
     // supplying each goroutine with the appropriate channels
     place0 := make(chan fork, 1)
@@ -113,5 +101,5 @@ func main() {
     for range ph {
         <-done // wait for philosphers to finish
     }
-    //fmt.Println("table empty")
+
 }
