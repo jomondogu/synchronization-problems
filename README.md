@@ -22,3 +22,6 @@ All code credits reproduced below, and included in the headers of their respecti
 
 - sushi-bar.py: algorithm from Allen B. Downey, *The Little Book of Semaphores*
 - sushi-bar.go: https://blog.ksub.org/bytes/post/sushi-bar/sushi-bar.go (modified)
+
+- sleep-sort.py: https://github.com/arpitbbhayani/go-sleep-sort/blob/master/sleepsort.go
+- sleep-sort.go: https://github.com/jomondogu/synchronization-problems/blob/master/A1/sleep-sort/sleep-sort.go
