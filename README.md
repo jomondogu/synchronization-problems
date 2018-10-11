@@ -1,6 +1,8 @@
 # synchronization-problems
 ### Classical (and not-so-classical) Synchronization Problems
 
+All code tested on Ubuntu 16.04 LTS, using psutil (https://pypi.org/project/psutil/) for Python & gopsutil (https://github.com/shirou/gopsutil) for Go.
+
 All code credits reproduced below, and included in the headers of their respective files.
 
 - counter.c, counter.py, threading-cleanup.py: https://greenteapress.com/wp/
